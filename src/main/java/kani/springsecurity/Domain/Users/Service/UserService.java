@@ -1,6 +1,7 @@
 package kani.springsecurity.Domain.Users.Service;
 
 import jakarta.annotation.Nullable;
+import kani.springsecurity.Domain.Users.Model.Profile;
 import kani.springsecurity.Domain.Users.Model.Users;
 import kani.springsecurity.Domain.Users.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,16 @@ public class UserService implements UserDetailsService {
         }
         request.setPassword(encoder.encode(request.getPassword()));
 
+        Profile initial_empty_profile = Profile.builder()
+                .userId(request.getId())
+                .user(request)
+                .bio("")
+                .favoriteAnimal("")
+                .magicPlace("")
+                .age(null)
+                .build();
+
+        request.setThisuserprofile(initial_empty_profile);
         repo.save(request);
     }
 

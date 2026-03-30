@@ -1,5 +1,6 @@
 package kani.springsecurity.Domain.Users.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,8 +20,14 @@ public class Users implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private String username;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    Profile thisuserprofile;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

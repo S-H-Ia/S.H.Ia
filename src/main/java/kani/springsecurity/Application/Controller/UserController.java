@@ -3,7 +3,9 @@ package kani.springsecurity.Application.Controller;
 import kani.springsecurity.Application.Controller.Request.UserRequest;
 import kani.springsecurity.Application.Controller.Response.UserResponse;
 import kani.springsecurity.Application.Mapper.UserMapper;
+import kani.springsecurity.Domain.Users.Model.Profile;
 import kani.springsecurity.Domain.Users.Model.Users;
+import kani.springsecurity.Domain.Users.Service.ProfileService;
 import kani.springsecurity.Domain.Users.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
@@ -25,17 +27,24 @@ public class UserController {
     private final UserMapper mapper;
 
     @GetMapping("/")
-    public ResponseEntity<List<UserResponse>> getall(){
+    /*public ResponseEntity<List<UserResponse>> getall(){
         List<UserResponse> findall = service.findall().stream().map(mapper::ToResponse).toList();
         return ResponseEntity.ok(findall);
     }
-
+     */
+    public ResponseEntity<List<Users>> getall(){
+        List<Users> findall = service.findall();
+        return ResponseEntity.ok(findall);
+    }
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getbyid(@PathVariable Long id) throws Exception {
-        UserResponse reponse = mapper.ToResponse(service.findById(id));
-        return ResponseEntity.ok(reponse);
+        try{
+            UserResponse reponse = mapper.ToResponse(service.findById(id));
+            return ResponseEntity.ok(reponse);
+        }catch (Exception e){
+            return  ResponseEntity.notFound().build();
+        }
     }
-
 
     @PostMapping("/")
     public ResponseEntity<Void> postuser(@RequestBody  UserRequest users) throws Exception {
@@ -44,6 +53,7 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
     @PutMapping("/{id}")
     public  ResponseEntity<UserResponse> edituser(@RequestBody UserRequest request,@PathVariable Long id){
         try{
@@ -51,7 +61,25 @@ public class UserController {
             Users users = service.alterUser(id, user);
             return ResponseEntity.ok(mapper.ToResponse(users));
         }  catch (Exception e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.notFound().build();
         }
+    }
+
+    // User Profile operations
+    private  final ProfileService PfService;
+
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<Profile> GetUserProfile(@PathVariable Long id) throws Exception {
+        try{
+            Profile byId = PfService.findById(id);
+            return ResponseEntity.ok(byId);
+        }catch (Exception e){
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/profile/{id}")
+    public ResponseEntity<Profile> PutUserPRofile(@PathVariable Long id, @RequestBody Profile request) throws Exception {
+        return ResponseEntity.ok(PfService.alterProfile(id,request));
     }
 }
