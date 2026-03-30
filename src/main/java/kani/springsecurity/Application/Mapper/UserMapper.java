@@ -27,6 +27,7 @@ public class UserMapper{
         return UserResponse.builder()
                 .id(entity.getId())
                 .username(entity.getUsername())
+                .profile(entity.getThisuserprofile())
                 .build();
     }
 

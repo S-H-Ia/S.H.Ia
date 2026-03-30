@@ -27,15 +27,18 @@ public class UserController {
     private final UserMapper mapper;
 
     @GetMapping("/")
-    /*public ResponseEntity<List<UserResponse>> getall(){
+    public ResponseEntity<List<UserResponse>> getall(){
         List<UserResponse> findall = service.findall().stream().map(mapper::ToResponse).toList();
         return ResponseEntity.ok(findall);
     }
-     */
+
+    /*
     public ResponseEntity<List<Users>> getall(){
         List<Users> findall = service.findall();
         return ResponseEntity.ok(findall);
     }
+    */
+
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getbyid(@PathVariable Long id) throws Exception {
         try{
