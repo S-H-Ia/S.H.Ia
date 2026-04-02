@@ -33,15 +33,9 @@ public class UserController {
 
 
     @GetMapping("/")
-    /*
+
     public ResponseEntity<List<UserResponse>> getall(){
         List<UserResponse> findall = service.findall().stream().map(mapper::ToResponse).toList();
-        return ResponseEntity.ok(findall);
-    }
-    */
-    public ResponseEntity<List<Users>> getall(){
-
-        List<Users> findall = service.findall();
         return ResponseEntity.ok(findall);
     }
 
@@ -58,9 +52,7 @@ public class UserController {
 
     @PostMapping("/")
     public ResponseEntity<Void> postuser(@RequestBody  UserRequest users) throws Exception {
-
         service.saveuser(mapper.ToEntity(users));
-
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
