@@ -8,11 +8,14 @@ import kani.springsecurity.Domain.Users.Model.Users;
 import kani.springsecurity.Domain.Users.Service.ProfileService;
 import kani.springsecurity.Domain.Users.Service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +28,9 @@ import java.util.List;
 public class UserController {
     private final UserService service;
     private final UserMapper mapper;
+
+
+
 
     @GetMapping("/")
     /*
@@ -70,12 +76,12 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> removeUser(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Void> removeUser(@PathVariable Long id, Authentication auth) throws Exception {
         /*
         service.deleteUser(id);
         PfService.deleteProfile(id);
         */
-        System.out.println("funciona plmds");
+        System.out.println("sou adm eu +"+auth.getName());
         return ResponseEntity.ok().build();
     }
 

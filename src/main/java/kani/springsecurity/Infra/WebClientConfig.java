@@ -8,7 +8,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfig {
 /*
-    @Value("${https://api.openai.com/v1/models}")
+    @Value("${https://api.anthropic.com/v1/messages }")
     private String ia_api;
 
     @Bean

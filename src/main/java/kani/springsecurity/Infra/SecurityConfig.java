@@ -2,6 +2,7 @@ package kani.springsecurity.Infra;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Role;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
@@ -27,9 +28,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity request){
-        return request.csrf(csrf -> csrf.disable())
+        return request
+                .csrf(csrf -> csrf.disable())
+
                 .authorizeHttpRequests(http -> http
-                                .requestMatchers(HttpMethod.DELETE).hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET).permitAll()
                         //  permiti posts em user para criar usuarios nao é boa pratica e deve ser refatora para logica de login e singup
                                 .requestMatchers(HttpMethod.POST, "/users/").permitAll()

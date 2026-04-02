@@ -51,18 +51,19 @@ public class UserService implements UserDetailsService {
                 .build();
 
         request.setThisuserprofile(initial_empty_profile);
-
+        request.setRole(Role.USER);
         repo.save(request);
     }
 
     @Override
     public UserDetails loadUserByUsername( String username) throws UsernameNotFoundException {
-        Optional<UserDetails> byUsername = repo.findByUsername(username);
+        Optional<Users> byUsername = repo.findByUsername(username);
         if(byUsername.isPresent()){
             var user = byUsername.get();
-            return User.withUsername(user
-                    .getUsername())
-                    .roles(String.valueOf(user.getAuthorities()))
+            return User.withUsername(
+                        user.getUsername()
+                    )
+                    .roles(user.getRole().name())
                     .password(user.getPassword())
                     .build();
         }

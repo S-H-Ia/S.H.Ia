@@ -16,3 +16,12 @@ spring:
   flyway:
     locations: classpath:db/migration
     enabled: true
+api:
+    key:  ${API_KEY}
+    url:  'https://api:anthropic:com/v1/messages'
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+        web : DEBUG
