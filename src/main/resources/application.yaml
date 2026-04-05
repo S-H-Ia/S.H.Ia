@@ -2,8 +2,8 @@ spring:
   application:
     name: Spring-Security
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/spring_security
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/users_agent
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   jpa:

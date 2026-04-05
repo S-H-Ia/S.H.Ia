@@ -1,22 +1,15 @@
-version: "3.9"
-
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: mysql_container
-    restart: always
-
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: postgres
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: mydatabase
-      MYSQL_USER: myusername
-      MYSQL_PASSWORD: mypassword
-
+      POSTGRES_DB: users_agent
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
     ports:
-      - "3306:3306"
-
+      - "5432:5432"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
-  mysql_data:
+  postgres_data:
