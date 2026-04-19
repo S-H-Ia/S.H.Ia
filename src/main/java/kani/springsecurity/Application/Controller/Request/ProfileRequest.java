@@ -7,7 +7,6 @@ import lombok.Builder;
 
 import java.util.Set;
 
-public static UserRepository repo;
 
 @Builder
 public record ProfileRequest(
@@ -18,6 +17,7 @@ public record ProfileRequest(
         String interests,
         Set<Tag> tags
         ) {
+    public static UserRepository repo ;
 
     public static Profile ToEntity(ProfileRequest request){
         return Profile.builder()

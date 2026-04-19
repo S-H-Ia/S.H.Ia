@@ -3,6 +3,7 @@ package kani.springsecurity.Domain.Profile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import kani.springsecurity.Domain.Tags.Tag;
+import kani.springsecurity.Domain.Users.UserRepository;
 import kani.springsecurity.Domain.Users.Users;
 import lombok.*;
 

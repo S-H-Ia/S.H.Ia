@@ -20,4 +20,8 @@ public class Tag {
     private String nome;
     private String category;
 
+    public Tag(String name, String category){
+        this.setNome(name);
+        this.setCategory(category);
+    }
 }

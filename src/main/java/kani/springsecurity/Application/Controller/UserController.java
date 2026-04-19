@@ -1,5 +1,6 @@
 package kani.springsecurity.Application.Controller;
 
+import kani.springsecurity.Application.Controller.Request.ProfileRequest;
 import kani.springsecurity.Application.Controller.Request.UserRequest;
 import kani.springsecurity.Application.Controller.Response.ProfileResponse;
 import kani.springsecurity.Application.Controller.Response.UserResponse;
@@ -77,7 +78,7 @@ public class UserController {
 
 
     @PutMapping("/profile/{id}")
-    public ResponseEntity<ProfileResponse> PutUserPRofile(@PathVariable Long id, @RequestBody Profile request) throws Exception {
+    public ResponseEntity<ProfileResponse> PutUserPRofile(@PathVariable Long id, @RequestBody ProfileRequest request) throws Exception {
         try{
             Profile profile = PfService.alterProfile(id, request);
             return ResponseEntity.ok(ProfileResponse.ToResponse(profile));
