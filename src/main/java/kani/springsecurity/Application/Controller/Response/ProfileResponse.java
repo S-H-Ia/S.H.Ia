@@ -15,7 +15,7 @@ public record ProfileResponse(
         Set<Tag> tags
 ) {
 
-    public static ProfileResponse ToEntity(Profile response){
+    public static ProfileResponse ToResponse(Profile response){
         return ProfileResponse.builder()
                 .bio(response.getBio())
                 .location(response.getLocation())

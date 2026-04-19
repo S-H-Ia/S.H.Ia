@@ -77,10 +77,10 @@ public class UserController {
 
 
     @PutMapping("/profile/{id}")
-    public ResponseEntity<Profile> PutUserPRofile(@PathVariable Long id, @RequestBody Profile request) throws Exception {
+    public ResponseEntity<ProfileResponse> PutUserPRofile(@PathVariable Long id, @RequestBody Profile request) throws Exception {
         try{
-            return ResponseEntity.ok(PfService.alterProfile(id,request));
-
+            Profile profile = PfService.alterProfile(id, request);
+            return ResponseEntity.ok(ProfileResponse.ToResponse(profile));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -89,17 +89,12 @@ public class UserController {
     public ResponseEntity<ProfileResponse> getProfileByid(@PathVariable Long id){
         try{
             Profile byId = PfService.findById(id);
-            ProfileResponse profileResponse = ProfileResponse.ToEntity(byId);
+            ProfileResponse profileResponse = ProfileResponse.ToResponse(byId);
             return ResponseEntity.ok(profileResponse);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    @PostMapping("/profile/{id}/tags")
-    public ResponseEntity<Profile> addTag(String tag,@PathVariable Long id) throws Exception {
-        Profile profileByid = PfService.findById(id);
-        PfService.addTagToProfile(profileByid,tag);
-        return ResponseEntity.ok().build();
-    }
+
 }

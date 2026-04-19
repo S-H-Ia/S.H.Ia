@@ -25,7 +25,7 @@ public class UserMapper{
     public UserResponse ToResponse(Users entity){
         return UserResponse.builder()
                 .username(entity.getUsername())
-                .profile(ProfileResponse.ToEntity(entity.getThisuserprofile()))
+                .profile(ProfileResponse.ToResponse(entity.getThisuserprofile()))
                 .build();
     }
 
