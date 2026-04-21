@@ -3,13 +3,16 @@ package kani.springsecurity.Application.Controller.Response;
 import kani.springsecurity.Domain.Tags.Tag;
 import lombok.Builder;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Builder
-public record TagResponse(String tag) {
+public record TagResponse(
+        String tag,
+        String category
+) {
 
-    public static Tag toEntity(Set<String> tags){
-        return Tag.builder().nome(tags.stream().toString()).build();
-    }
 }

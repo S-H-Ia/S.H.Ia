@@ -6,6 +6,7 @@ import kani.springsecurity.Application.Controller.Response.ProfileResponse;
 import kani.springsecurity.Application.Controller.Response.UserResponse;
 import kani.springsecurity.Application.Mapper.UserMapper;
 import kani.springsecurity.Domain.Profile.Profile;
+import kani.springsecurity.Domain.Tags.TagService;
 import kani.springsecurity.Domain.Users.Users;
 import kani.springsecurity.Domain.Profile.ProfileService;
 import kani.springsecurity.Domain.Users.UserService;
@@ -17,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -25,6 +27,7 @@ public class UserController {
     private final UserService service;
     private final UserMapper mapper;
     private  final ProfileService PfService;
+    private final TagService TAGservice;
 
     @GetMapping("/")
     public ResponseEntity<List<UserResponse>> getall(){
@@ -79,11 +82,13 @@ public class UserController {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("/profile/{id}")
     public ResponseEntity<ProfileResponse> getProfileByid(@PathVariable Long id){
         try{
             Profile byId = PfService.findById(id);
             ProfileResponse profileResponse = ProfileResponse.ToResponse(byId);
+
             return ResponseEntity.ok(profileResponse);
         } catch (Exception e) {
             throw new RuntimeException(e);
