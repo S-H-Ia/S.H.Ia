@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Data
 @Table(name = "user_profiles")
 @Getter @Setter
 @NoArgsConstructor
