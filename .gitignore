@@ -1,7 +1,9 @@
 HELP.md
-./Documentation/
+Documentation
 .env
-.CLAUDE.md
+*.md
+
+.gitattributes
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

@@ -55,6 +55,11 @@
             <artifactId>flyway-database-postgresql</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.pgvector</groupId>
+            <artifactId>pgvector</artifactId>
+            <version>0.1.6</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webflux</artifactId>
             <version>7.0.6</version>
@@ -95,6 +100,11 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-vector</artifactId>
+            <version>6.4.0.Final</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -110,11 +120,14 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <jvmArguments>--enable-native-access=ALL-UNNAMED</jvmArguments>
+
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
