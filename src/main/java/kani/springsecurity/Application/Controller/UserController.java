@@ -1,5 +1,6 @@
 package kani.springsecurity.Application.Controller;
 
+import kani.springsecurity.Application.Controller.Request.FullUserRequest;
 import kani.springsecurity.Application.Controller.Request.ProfileRequest;
 import kani.springsecurity.Application.Controller.Request.UserRequest;
 import kani.springsecurity.Application.Controller.Response.ProfileResponse;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
@@ -93,5 +95,25 @@ public class UserController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+
+
+    @PostMapping("full-user/")
+    public ResponseEntity CreateFullUser(@RequestBody FullUserRequest request) throws Exception {
+       try{
+        Users savedUser = service.saveuser(
+                    UserRequest.ToEntity(request.user())
+                ) ;
+        PfService.saveProfile(
+                    ProfileRequest.ToEntity(request.profile())
+                );
+        return ResponseEntity.ok(
+                UserResponse.ToResponse(savedUser)
+        );
+       }catch (Exception e ){
+           System.out.println(e);
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+       }
     }
 }

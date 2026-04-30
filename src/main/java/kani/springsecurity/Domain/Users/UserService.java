@@ -2,7 +2,6 @@ package kani.springsecurity.Domain.Users;
 
 import jakarta.transaction.Transactional;
 import kani.springsecurity.Application.Controller.Request.UserRequest;
-import kani.springsecurity.Domain.Profile.Profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,25 +32,14 @@ public class UserService implements UserDetailsService {
         throw  new RuntimeException("Id nao econtrado");
     }
 
-    public void saveuser(Users request){
+    public Users saveuser(Users request) throws Exception {
         if(repo.findByUsername(request.getUsername()).isPresent()){
-            throw new RuntimeException("Usuario Já cadastrado");
+            throw new Exception("Usuario Já cadastrado");
         }
         request.setPassword(encoder.encode(request.getPassword()));
-
-        Profile initial_empty_profile = Profile.builder()
-                .userId(request.getId())
-                .user(request)
-                .bio("")
-                .location("")
-                .ocupation("")
-                .interests("")
-                .tags(null)
-                .build();
-
-        request.setThisuserprofile(initial_empty_profile);
         request.setRole(Role.USER);
         repo.save(request);
+        return request;
     }
 
     @Override

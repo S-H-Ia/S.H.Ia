@@ -5,6 +5,7 @@ import kani.springsecurity.Domain.Tags.Tag;
 import kani.springsecurity.Domain.Tags.TagRepository;
 import kani.springsecurity.Domain.Tags.TagService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProfileService {
     private final ProfileRepository repo;
-    private  final TagService tagService;
+    private final ApplicationEventPublisher publisher;
 
     public Profile findById(long id) throws Exception {
         Optional<Profile> byId = repo.findById(id);
@@ -55,5 +56,16 @@ public class ProfileService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+
+    public void saveProfile(Profile profile) throws Exception {
+        if (repo.existsById(profile.getUserId())){
+            throw new Exception("profile already exists");
+        }
+        Profile save = repo.save(profile);
+        publisher.publishEvent(save);
+
+
     }
 }
