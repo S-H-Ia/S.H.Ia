@@ -1,6 +1,7 @@
 package kani.springsecurity.Domain.Profile;
 
 import kani.springsecurity.Application.Controller.Request.ProfileRequest;
+import kani.springsecurity.Application.Events.SendSavedProfileToEmbedding;
 import kani.springsecurity.Domain.Tags.Tag;
 import kani.springsecurity.Domain.Tags.TagRepository;
 import kani.springsecurity.Domain.Tags.TagService;
@@ -64,8 +65,8 @@ public class ProfileService {
             throw new Exception("profile already exists");
         }
         Profile save = repo.save(profile);
-        publisher.publishEvent(save);
-
-
+        publisher.publishEvent(
+                SendSavedProfileToEmbedding.builder().build()
+        );
     }
 }

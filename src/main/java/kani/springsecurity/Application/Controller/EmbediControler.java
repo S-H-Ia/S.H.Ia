@@ -8,7 +8,9 @@ import kani.springsecurity.Domain.Profile.Profile;
 import kani.springsecurity.Domain.Profile.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.data.metrics.DefaultRepositoryTagsProvider;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -22,6 +24,10 @@ public class EmbediControler {
     private final EmbedingService service;
     private final EmbedingRepository repo;
 
+    /*
+    -------- when profile is save, a event is sent to the embedding model HOWEVER if the embeding fail
+    when creating a profile, this endpoint serv as a manual retrial for the users
+    */
     @PostMapping("/{id}")
     public Mono<ResponseEntity<Embeding>> getProfileEmbeding(@PathVariable Long id ) throws Exception {
         ProfileResponse profile  = ProfileResponse.ToResponse(PfService.findById(id));
@@ -37,6 +43,7 @@ public class EmbediControler {
                  ).subscribeOn(Schedulers.boundedElastic())
                  .map(ResponseEntity::ok);
     }
+
     @GetMapping()
     public ResponseEntity<?> findAllEmbedingsFromDB(){
         return ResponseEntity.ok(
