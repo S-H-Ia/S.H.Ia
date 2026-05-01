@@ -3,6 +3,7 @@ package kani.springsecurity.Application.Controller.Request;
 import kani.springsecurity.Domain.Profile.Profile;
 import kani.springsecurity.Domain.Tags.Tag;
 import kani.springsecurity.Domain.Users.UserRepository;
+import kani.springsecurity.Domain.Users.Users;
 import lombok.Builder;
 
 import java.util.Set;
@@ -10,7 +11,6 @@ import java.util.Set;
 
 @Builder
 public record ProfileRequest(
-        Long userId,
         String bio,
         String location,
         String occupation,
@@ -21,8 +21,17 @@ public record ProfileRequest(
 
     public static Profile ToEntity(ProfileRequest request){
         return Profile.builder()
-                .userId(request.userId())
-                .user(repo.getById(request.userId()))
+                .bio(request.bio())
+                .location(request.location())
+                .ocupation(request.occupation())
+                .interests(request.interests())
+                .tags(request.tags())
+                .build();
+    }
+    public static Profile ToEntityWithUser(ProfileRequest request, Users user){
+        return Profile.builder()
+                .user(user)
+                .userId(user.getId())
                 .bio(request.bio())
                 .location(request.location())
                 .ocupation(request.occupation())

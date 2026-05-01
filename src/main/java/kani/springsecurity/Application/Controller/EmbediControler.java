@@ -4,16 +4,11 @@ import kani.springsecurity.Application.Controller.Response.ProfileResponse;
 import kani.springsecurity.Domain.Embeding.Embeding;
 import kani.springsecurity.Domain.Embeding.EmbedingRepository;
 import kani.springsecurity.Domain.Embeding.EmbedingService;
-import kani.springsecurity.Domain.Profile.Profile;
 import kani.springsecurity.Domain.Profile.ProfileService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.data.metrics.DefaultRepositoryTagsProvider;
-import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 @RestController

@@ -5,18 +5,26 @@ import kani.springsecurity.Application.Controller.Request.ProfileRequest;
 import kani.springsecurity.Application.Controller.Request.UserRequest;
 import kani.springsecurity.Application.Controller.Response.ProfileResponse;
 import kani.springsecurity.Application.Controller.Response.UserResponse;
+import kani.springsecurity.Application.Exceptions.AlreadyExist;
+import kani.springsecurity.Application.Exceptions.EmptyProfile;
 import kani.springsecurity.Domain.Profile.Profile;
-import kani.springsecurity.Domain.Tags.TagService;
+import kani.springsecurity.Domain.Tags.Tag;
 import kani.springsecurity.Domain.Users.Users;
 import kani.springsecurity.Domain.Profile.ProfileService;
 import kani.springsecurity.Domain.Users.UserService;
 import lombok.RequiredArgsConstructor;
+
+import org.apache.coyote.BadRequestException;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
 @RequestMapping("/users")
@@ -24,16 +32,15 @@ import java.util.List;
 public class UserController {
     private final UserService service;
     private  final ProfileService PfService;
-    private final TagService TAGservice;
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<UserResponse>> getall(){
         List<UserResponse> findall = service.findall().stream().map(UserResponse::ToResponse).toList();
         return ResponseEntity.ok(findall);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getbyid(@PathVariable Long id) throws Exception {
+    public ResponseEntity<UserResponse> getbyid(@PathVariable Long id) {
         try{
             UserResponse reponse = UserResponse.ToResponse(service.findById(id));
             return ResponseEntity.ok(reponse);
@@ -42,7 +49,56 @@ public class UserController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping("")
+    public ResponseEntity createFullUser(@RequestBody FullUserRequest request) {
+        FullUserRequest emptyRequestExemple = FullUserRequest.builder()
+                    .user(UserRequest.builder()
+                            .username("")
+                            .password("")
+                            .build()
+                    )
+                    .profile(ProfileRequest.builder()
+                            .bio("")
+                            .location("")
+                            .occupation("")
+                            .interests("")
+                            .tags(
+                                    Set.of(Tag.builder()
+                                            .nome("")
+                                            .category("")
+                                            .build())
+                            )
+                            .build()
+                    )
+                .build();
+        try {
+            Users savedUser = service.saveuser(
+                    UserRequest.ToEntity(request.user())
+            );
+            PfService.saveProfile(
+                    ProfileRequest.ToEntity(request.profile())
+            );
+            return ResponseEntity.ok(
+                    UserResponse.ToResponse(savedUser)
+            );
+        } catch (AlreadyExist e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (EmptyProfile e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    "Empty profile try re-writing the profile\n"+
+                    emptyRequestExemple
+            );
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    "Request Body is not right heres a exemple:\n"+
+                    emptyRequestExemple);
+        }
+    }
+    /*
+        user can be created as a detached user that won't have a profile, I think this type of profile can be used for
+        users that are executors like admin,manager and etc., where a profile is not needed.
+    */
+    @PostMapping("detached/")
     public ResponseEntity<Void> postuser(@RequestBody  UserRequest users) throws Exception {
         service.saveuser(UserRequest.ToEntity(users));
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -93,22 +149,4 @@ public class UserController {
     }
 
 
-
-    @PostMapping("full-user/")
-    public ResponseEntity CreateFullUser(@RequestBody FullUserRequest request) throws Exception {
-       try{
-        Users savedUser = service.saveuser(
-                    UserRequest.ToEntity(request.user())
-                ) ;
-        PfService.saveProfile(
-                    ProfileRequest.ToEntity(request.profile())
-                );
-        return ResponseEntity.ok(
-                UserResponse.ToResponse(savedUser)
-        );
-       }catch (Exception e ){
-           System.out.println(e);
-           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
-       }
-    }
 }

@@ -9,11 +9,12 @@ public record FullUserRequest(
         UserRequest user,
         ProfileRequest profile
         ) {
-    public UserResponse UserAndProfileWrapper(UserRequest userRequest, ProfileRequest profileRequest){
+    public UserResponse UserAndProfileWrapperToResponse(UserRequest userRequest, ProfileRequest profileRequest){
         return UserResponse.ToResponse(
                     Users.builder()
                         .username(userRequest.username())
                             .password(userRequest.password())
+
                         .thisuserprofile(
                                 ProfileRequest.ToEntity(profileRequest)
                         )

@@ -2,6 +2,7 @@ package kani.springsecurity.Domain.Users;
 
 import jakarta.transaction.Transactional;
 import kani.springsecurity.Application.Controller.Request.UserRequest;
+import kani.springsecurity.Application.Exceptions.AlreadyExist;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,9 +33,9 @@ public class UserService implements UserDetailsService {
         throw  new RuntimeException("Id nao econtrado");
     }
 
-    public Users saveuser(Users request) throws Exception {
+    public Users saveuser(Users request) throws Exception{
         if(repo.findByUsername(request.getUsername()).isPresent()){
-            throw new Exception("Usuario Já cadastrado");
+            throw new AlreadyExist("user already in exists");
         }
         request.setPassword(encoder.encode(request.getPassword()));
         request.setRole(Role.USER);

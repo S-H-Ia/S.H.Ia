@@ -62,4 +62,12 @@ public class Profile {
         tags.add(tag);
         return tags;
     }
+
+    public Boolean isEmpty(Profile profile){
+        return (bio == null || bio.isBlank()) &&
+                (location == null || location.isBlank()) &&
+                (ocupation == null || ocupation.isBlank()) &&
+                (interests == null || interests.isBlank()) &&
+                (tags == null || tags.isEmpty());
+    }
 }

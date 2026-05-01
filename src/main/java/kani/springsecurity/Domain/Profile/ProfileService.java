@@ -2,6 +2,8 @@ package kani.springsecurity.Domain.Profile;
 
 import kani.springsecurity.Application.Controller.Request.ProfileRequest;
 import kani.springsecurity.Application.Events.SendSavedProfileToEmbedding;
+import kani.springsecurity.Application.Exceptions.AlreadyExist;
+import kani.springsecurity.Application.Exceptions.EmptyProfile;
 import kani.springsecurity.Domain.Tags.Tag;
 import kani.springsecurity.Domain.Tags.TagRepository;
 import kani.springsecurity.Domain.Tags.TagService;
@@ -50,7 +52,7 @@ public class ProfileService {
     }
 
     @Transactional
-    public void deleteProfile(Long id) throws Exception {
+    public void deleteProfile(Long id)  {
         try{
             findById(id);
             repo.deleteById(id);
@@ -58,12 +60,11 @@ public class ProfileService {
             throw new RuntimeException(e);
         }
     }
+    public void saveProfile(Profile profile) {
+        if (repo.existsById(profile.getUserId())){throw new AlreadyExist("Profile already exists");}
 
+        if (profile.isEmpty(profile) ==true ){throw new EmptyProfile("can't save a empty profile");}
 
-    public void saveProfile(Profile profile) throws Exception {
-        if (repo.existsById(profile.getUserId())){
-            throw new Exception("profile already exists");
-        }
         Profile save = repo.save(profile);
         publisher.publishEvent(
                 SendSavedProfileToEmbedding.builder().build()
