@@ -1,18 +1,9 @@
 package kani.springsecurity.Domain.Profile;
 
 import kani.springsecurity.Application.Controller.Request.ProfileRequest;
-import kani.springsecurity.Application.Controller.Response.ProfileResponse;
-import kani.springsecurity.Application.Events.SendSavedProfileToEmbedding;
 import kani.springsecurity.Application.Exceptions.AlreadyExist;
 import kani.springsecurity.Application.Exceptions.EmptyProfile;
-import kani.springsecurity.Domain.Tags.Tag;
-import kani.springsecurity.Domain.Tags.TagRepository;
-import kani.springsecurity.Domain.Tags.TagService;
-import kani.springsecurity.Domain.Users.UserService;
-import kani.springsecurity.Domain.Users.Users;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +32,7 @@ public class ProfileService {
                         .userId(id)
                         .bio(request.bio())
                         .location(request.location())
-                        .ocupation(request.occupation())
+                        .occupation(request.occupation())
                         .interests(request.interests())
                         .build();
                 return repo.save(altered);

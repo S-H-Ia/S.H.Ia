@@ -25,7 +25,7 @@ public record ProfileResponse(
                 .user_id(response.getUserId())
                 .bio(response.getBio())
                 .location(response.getLocation())
-                .occupation(response.getOcupation())
+                .occupation(response.getOccupation())
                 .interests(response.getInterests())
                 .tags(
                         response.getTags().stream().map(TagResponse::ToResponse).collect(Collectors.toSet())

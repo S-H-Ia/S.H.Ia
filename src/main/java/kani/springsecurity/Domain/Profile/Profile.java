@@ -33,7 +33,7 @@ public class Profile {
     private String location;
 
     @Column(name = "occupation")
-    private String ocupation;
+    private String occupation;
 
     private String interests;
 
@@ -66,7 +66,7 @@ public class Profile {
     public Boolean isEmpty(Profile profile){
         return (bio == null || bio.isBlank()) &&
                 (location == null || location.isBlank()) &&
-                (ocupation == null || ocupation.isBlank()) &&
+                (occupation == null || occupation.isBlank()) &&
                 (interests == null || interests.isBlank()) &&
                 (tags == null || tags.isEmpty());
     }

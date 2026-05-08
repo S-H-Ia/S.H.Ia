@@ -1,13 +1,7 @@
 package kani.springsecurity.Application.Controller.Request;
 
-import kani.springsecurity.Application.Controller.Response.UserResponse;
-import kani.springsecurity.Domain.Profile.Profile;
-import kani.springsecurity.Domain.Tags.Tag;
-import kani.springsecurity.Domain.Users.Users;
 import lombok.Builder;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,14 +13,14 @@ public record FullUserRequest (
 
         String bio,
         String location,
-        String ocupation,
+        String occupation,
         String interests,
         Set<String> tags
 
         ) {
 
     public static FullUserRequest EmptyExemple (){
-        return FullUserRequest.builder().username("").password("").bio("").location("").ocupation("").interests("").tags(Set.of()).build();
+        return FullUserRequest.builder().username("").password("").bio("").location("").occupation("").interests("").tags(Set.of()).build();
     }
 
     public static Map Build(FullUserRequest request){
@@ -39,7 +33,11 @@ public record FullUserRequest (
                         .build())
                 .collect(Collectors.toSet());
 
-        ProfileRequest profileReq = ProfileRequest.builder().bio(request.bio()).location(request.location()).occupation(request.ocupation()).interests(request.interests())
+        ProfileRequest profileReq = ProfileRequest.builder()
+                .bio(request.bio())
+                .location(request.location())
+                .occupation(request.occupation())
+                .interests(request.interests())
                 .tags(tagReq)
                 .build();
 

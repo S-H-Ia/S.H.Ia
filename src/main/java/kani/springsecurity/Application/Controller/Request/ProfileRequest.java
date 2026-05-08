@@ -2,8 +2,6 @@ package kani.springsecurity.Application.Controller.Request;
 
 import kani.springsecurity.Domain.Profile.Profile;
 import kani.springsecurity.Domain.Tags.Tag;
-import kani.springsecurity.Domain.Users.UserRepository;
-import kani.springsecurity.Domain.Users.Users;
 import lombok.Builder;
 
 import java.util.Set;
@@ -24,7 +22,7 @@ public record ProfileRequest(
         return Profile.builder()
                 .bio(request.bio())
                 .location(request.location())
-                .ocupation(request.occupation())
+                .occupation(request.occupation())
                 .tags(requestTags)
                 .interests(request.interests())
                 .build();
